@@ -1,3 +1,4 @@
+import random
 import torch
 import numpy as np
 
@@ -70,6 +71,15 @@ def FloatTensor(*args, torch_device=None, **kwargs):
         torch_device = device
     return torch.FloatTensor(*args, **kwargs).to(torch_device)
 
+def seed_rng(seed=0):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+
+def generator(device="cpu", seed=0):
+    g = torch.Generator(device)
+    g.manual_seed(seed)
+    return g
 
 def from_numpy(*args, **kwargs):
     return torch.from_numpy(*args, **kwargs).float().to(device)
