@@ -75,6 +75,8 @@ def seed_rng(seed=0):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
+    torch.backends.cudnn.benchmark = False
+    torch.backends.cudnn.deterministic = True
 
 def generator(device="cpu", seed=0):
     g = torch.Generator(device)
