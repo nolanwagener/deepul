@@ -94,10 +94,10 @@ def show_samples(
     samples: np.ndarray, fname: str = None, nrow: int = 10, title: str = "Samples"
 ):
     import torch
-    from torchvision.utils import make_grid
+    import torchvision
 
     samples = (torch.FloatTensor(samples) / 255).permute(0, 3, 1, 2)
-    grid_img = make_grid(samples, nrow=nrow)
+    grid_img = torchvision.utils.make_grid(samples, nrow=nrow)
     plt.figure()
     plt.title(title)
     plt.imshow(grid_img.permute(1, 2, 0))
@@ -152,7 +152,8 @@ def load_colored_mnist_text(file_path):
 
 
 def get_data_dir(hw_number: int):
-    return join('deepul', 'homeworks', f'hw{hw_number}', 'data')
+    #return join('deepul', 'homeworks', f'hw{hw_number}', 'data')
+    return 'data'
 
 
 def quantize(images: np.ndarray, n_bits: int = 8):
