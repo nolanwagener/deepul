@@ -1,6 +1,28 @@
 import random
 import torch
+import torch.nn as nn
 import numpy as np
+
+class MyModule(nn.Module):
+    """
+    An `nn.Module` containing other functions.
+    """
+    def __init__(self):
+        super().__init__()
+
+    @property
+    def n_params(self):
+        return sum([p.numel() for p in self.parameters()])
+
+    @property
+    def device(self):
+        raise NotImplementedError("`device` property not implemented")
+
+    def print_n_params(self):
+        if self.n_params < 1000:
+            print(f"Parameter count: {self.n_params}")
+        else:
+            print(f"Parameter count: {self.n_params:.2e}")
 
 
 def soft_update_from_to(source, target, tau):
@@ -71,12 +93,12 @@ def FloatTensor(*args, torch_device=None, **kwargs):
         torch_device = device
     return torch.FloatTensor(*args, **kwargs).to(torch_device)
 
-def seed_rng(seed=0):
+def seed_rng(seed=0, deterministic=True):
     random.seed(seed)
     np.random.seed(seed)
     torch.manual_seed(seed)
-    torch.backends.cudnn.benchmark = False
-    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = not deterministic
+    torch.backends.cudnn.deterministic = deterministic
 
 def generator(device="cpu", seed=0):
     g = torch.Generator(device)
